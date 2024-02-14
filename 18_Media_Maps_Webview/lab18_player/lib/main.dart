@@ -19,7 +19,7 @@ class _MainAppState extends State<MainApp> {
   void initState() {
     super.initState();
     _controller = VideoPlayerController.networkUrl(Uri.parse(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'));
+        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'));
 
     _controller.addListener(() {
       setState(() {});
@@ -34,12 +34,14 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Lab #18.2 - Video player'),
         ),
         body: SizedBox(
-          height: 300,
+          height: 400,
           width: double.infinity,
           child: Column(children: [
             _controller.value.isInitialized
@@ -48,11 +50,23 @@ class _MainAppState extends State<MainApp> {
                     child: VideoPlayer(_controller),
                   )
                 : Container(),
-            Slider(
-                value: 0.5,
-                onChanged: (value) {
-                  _controller.position = value;
-                }),
+            VideoProgressIndicator(_controller, allowScrubbing: true),
+            Row(
+              children: [
+                Expanded(
+                    child: ElevatedButton(
+                        onPressed: () => _controller.seekTo(Duration(
+                            seconds:
+                                _controller.value.position.inSeconds - 10)),
+                        child: const Text('-10'))),
+                Expanded(
+                    child: ElevatedButton(
+                        onPressed: () => _controller.seekTo(Duration(
+                            seconds:
+                                _controller.value.position.inSeconds + 10)),
+                        child: const Text('+10')))
+              ],
+            )
           ]),
         ),
         floatingActionButton: FloatingActionButton(
