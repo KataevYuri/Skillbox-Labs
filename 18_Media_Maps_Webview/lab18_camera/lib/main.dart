@@ -84,8 +84,14 @@ class _MainAppState extends State<MainApp> {
 
   Future<void>? initCamera() async {
     cameras = await availableCameras();
-    controller = CameraController(cameras[0], ResolutionPreset.max);
+    controller = CameraController(cameras[1], ResolutionPreset.max);
     await controller!.initialize();
     setState(() {});
+  }
+
+  @override
+  void dispose() {
+    controller!.dispose();
+    super.dispose();
   }
 }
