@@ -59,7 +59,7 @@ class _MainAppState extends State<MainApp> {
               )
             : GridView.count(
                 crossAxisCount: 3,
-                crossAxisSpacing: 5,
+                childAspectRatio: 0.6,
                 children: imagesList,
               ),
         bottomNavigationBar: BottomNavigationBar(
