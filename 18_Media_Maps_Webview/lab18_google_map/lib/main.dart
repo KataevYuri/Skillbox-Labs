@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +14,8 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  late final YandexMapController _mapController;
+
   @override
   void initState() {
     super.initState();
@@ -26,30 +28,26 @@ class _MainAppState extends State<MainApp> {
       theme: ThemeData.dark(),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Lab #18.3 - Google Map'),
+          title: const Text('Lab #18.3 - Maps'),
         ),
         body: SizedBox(
-          height: 400,
+          height: double.infinity,
           width: double.infinity,
-          child: Column(children: [
-            Row(
-              children: [
-                Expanded(
-                    child: ElevatedButton(
-                        onPressed: () => {}, child: const Text('-10'))),
-                Expanded(
-                    child: ElevatedButton(
-                        onPressed: () => {}, child: const Text('+10')))
-              ],
-            )
-          ]),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {});
-          },
-          child: const Icon(
-            Icons.play_arrow,
+          child: YandexMap(
+            onMapCreated: (controller) async {
+              _mapController = controller;
+              await _mapController.moveCamera(
+                CameraUpdate.newCameraPosition(
+                  const CameraPosition(
+                    target: Point(
+                      latitude: 50,
+                      longitude: 20,
+                    ),
+                    zoom: 3,
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -58,6 +56,7 @@ class _MainAppState extends State<MainApp> {
 
   @override
   void dispose() {
+    _mapController.dispose();
     super.dispose();
   }
 }
