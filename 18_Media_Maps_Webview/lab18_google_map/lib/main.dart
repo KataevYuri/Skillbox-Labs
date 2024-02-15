@@ -40,10 +40,10 @@ class _MainAppState extends State<MainApp> {
                 CameraUpdate.newCameraPosition(
                   const CameraPosition(
                     target: Point(
-                      latitude: 50,
-                      longitude: 20,
+                      latitude: 53,
+                      longitude: 53,
                     ),
-                    zoom: 3,
+                    zoom: 6,
                   ),
                 ),
               );
