@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class RecordsPage extends StatefulWidget {
   const RecordsPage({Key? key}) : super(key: key);
-  static const routeName = '/records';
 
   @override
   createState() => _RecordsPageState();

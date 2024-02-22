@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lab21_1_hiveboxes/categories.dart';
 
+import 'page_main.dart';
 import 'page_records.dart';
 
 void main() {
@@ -16,118 +15,17 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  Box<Categories>? _categoriesBox;
-  final _newcatname = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeHive();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      onGenerateRoute: (RouteSettings settings) {
-        switch (settings.name) {
-          case RecordsPage.routeName:
-            return MaterialPageRoute(builder: (BuildContext context) {
-              return const RecordsPage();
-            });
-        }
-        return null;
-      },
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Lab #21.1 Hiveboxes'),
-          centerTitle: true,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        body: Center(
-          child: _categoriesBox == null
-              ? const CircularProgressIndicator()
-              : Column(
-                  children: [
-                    TextField(
-                      controller: _newcatname,
-                      decoration: const InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 2.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black26, width: 1.0),
-                          ),
-                          hintText: 'Введите категорию...'),
-                    ),
-                    Expanded(
-                      child: ValueListenableBuilder(
-                          valueListenable: _categoriesBox!.listenable(),
-                          builder: (context, Box<Categories> box, widget) {
-                            return ListView.builder(
-                                itemCount: box.length,
-                                itemBuilder: (_, index) {
-                                  final item = box.values.elementAt(index);
-                                  return ElevatedButton(
-                                    onPressed: () => Navigator.of(context)
-                                        .pushNamed('/records'),
-                                    child: Center(child: Text(item.name)),
-                                  );
-                                });
-                          }),
-                    ),
-                  ],
-                ),
-        ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            FloatingActionButton(
-              onPressed: () {
-                _addRecord(_newcatname.text);
-                _newcatname.text = "";
-              },
-              child: const Icon(Icons.add),
-            ),
-            FloatingActionButton(
-              onPressed: () {
-                _removeFirst();
-              },
-              child: const Icon(Icons.delete),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _addRecord(String name) async {
-    if (name.isNotEmpty) {
-      _categoriesBox?.add(Categories(name));
-    }
-  }
-
-  void _removeFirst() async {
-    if (_categoriesBox!.values.isNotEmpty) {
-      final rec = _categoriesBox!.values.last;
-      rec.delete();
-    }
-  }
-
-  void _initializeHive() async {
-    await Hive.initFlutter();
-    Hive.registerAdapter(CategoriesAdapter());
-
-    Hive.openBox<Categories>('categories').then((value) {
-      setState(() {
-        _categoriesBox = value;
-      });
-    });
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/': (context) => const MainPage(),
+          '/records': (context) => const RecordsPage()
+        });
   }
 }
