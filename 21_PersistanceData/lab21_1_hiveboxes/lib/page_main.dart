@@ -53,11 +53,14 @@ class _MainPageState extends State<MainPage> {
                               itemCount: box.length,
                               itemBuilder: (_, index) {
                                 final item = box.values.elementAt(index);
-                                return ListTile(
-                                  title: Text(item.name),
-                                  onTap: () => Navigator.of(context).pushNamed(
-                                    '/records',
-                                    arguments: item.name,
+                                return Card(
+                                  child: ListTile(
+                                    title: Text(item.name),
+                                    onTap: () =>
+                                        Navigator.of(context).pushNamed(
+                                      '/records',
+                                      arguments: item.name,
+                                    ),
                                   ),
                                 );
                               });
@@ -106,7 +109,7 @@ class _MainPageState extends State<MainPage> {
     await Hive.initFlutter();
     Hive.registerAdapter(CategoriesAdapter());
 
-    Hive.openBox<Categories>('categories').then((value) {
+    Hive.openBox<Categories>('database1').then((value) {
       setState(() {
         _categoriesBox = value;
       });
