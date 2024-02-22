@@ -24,7 +24,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lab #21.1 Hiveboxes'),
+        title: const Text('Категории'),
         centerTitle: true,
       ),
       body: Center(
@@ -43,7 +43,7 @@ class _MainPageState extends State<MainPage> {
                           borderSide:
                               BorderSide(color: Colors.black26, width: 1.0),
                         ),
-                        hintText: 'Введите категорию...'),
+                        hintText: 'Введите новую категорию...'),
                   ),
                   Expanded(
                     child: ValueListenableBuilder(
@@ -55,8 +55,10 @@ class _MainPageState extends State<MainPage> {
                                 final item = box.values.elementAt(index);
                                 return ListTile(
                                   title: Text(item.name),
-                                  onTap: () => Navigator.of(context)
-                                      .pushNamed('/records'),
+                                  onTap: () => Navigator.of(context).pushNamed(
+                                    '/records',
+                                    arguments: item.name,
+                                  ),
                                 );
                               });
                         }),
@@ -68,6 +70,7 @@ class _MainPageState extends State<MainPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           FloatingActionButton(
+            heroTag: "btn1",
             onPressed: () {
               _addRecord(_newcatname.text);
               _newcatname.text = "";
@@ -75,6 +78,7 @@ class _MainPageState extends State<MainPage> {
             child: const Icon(Icons.add),
           ),
           FloatingActionButton(
+            heroTag: "btn2",
             onPressed: () {
               _removeFirst();
             },
