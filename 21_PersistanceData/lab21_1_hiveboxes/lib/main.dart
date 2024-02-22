@@ -4,7 +4,9 @@ import 'page_main.dart';
 import 'page_records.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    const MainApp(),
+  );
 }
 
 class MainApp extends StatefulWidget {

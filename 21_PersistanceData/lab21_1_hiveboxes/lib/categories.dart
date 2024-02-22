@@ -6,5 +6,13 @@ part 'categories.g.dart';
 class Categories extends HiveObject {
   @HiveField(0)
   String name;
+  List<Records>? records;
   Categories(this.name);
+}
+
+@HiveType(typeId: 1)
+class Records extends HiveObject {
+  @HiveField(0)
+  String name;
+  Records(this.name);
 }
