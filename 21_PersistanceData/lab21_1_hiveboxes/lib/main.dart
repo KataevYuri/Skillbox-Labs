@@ -18,14 +18,15 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        debugShowCheckedModeBanner: false,
-        routes: {
-          '/': (context) => const MainPage(),
-          '/records': (context) => const RecordsPage()
-        });
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/': (context) => const MainPage(),
+        '/records': (context) => const RecordsPage(),
+      },
+    );
   }
 }

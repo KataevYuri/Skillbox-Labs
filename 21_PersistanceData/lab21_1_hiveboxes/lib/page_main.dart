@@ -53,10 +53,10 @@ class _MainPageState extends State<MainPage> {
                               itemCount: box.length,
                               itemBuilder: (_, index) {
                                 final item = box.values.elementAt(index);
-                                return ElevatedButton(
-                                  onPressed: () => Navigator.of(context)
+                                return ListTile(
+                                  title: Text(item.name),
+                                  onTap: () => Navigator.of(context)
                                       .pushNamed('/records'),
-                                  child: Center(child: Text(item.name)),
                                 );
                               });
                         }),
