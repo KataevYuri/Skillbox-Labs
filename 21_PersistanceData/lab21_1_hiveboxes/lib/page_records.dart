@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:lab21_1_hiveboxes/categories.dart';
 
 class RecordsPage extends StatefulWidget {
   const RecordsPage({Key? key}) : super(key: key);
@@ -8,13 +10,13 @@ class RecordsPage extends StatefulWidget {
 }
 
 class _RecordsPageState extends State<RecordsPage> {
-  String _recName = '';
+  Box<Categories>? _recName;
 
   @override
   void didChangeDependencies() {
     final args = ModalRoute.of(context)?.settings.arguments;
 
-    _recName = args as String;
+    _recName = args as Box<Categories>;
     setState(() {});
     super.didChangeDependencies();
   }
@@ -23,7 +25,7 @@ class _RecordsPageState extends State<RecordsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_recName),
+        title: Text(_recName!.name),
       ),
       body: const SafeArea(
         child: Column(
