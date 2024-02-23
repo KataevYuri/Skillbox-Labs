@@ -17,16 +17,18 @@ class CategoriesAdapter extends TypeAdapter<Categories> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Categories(
-      fields[0] as String,
-    );
+      name: fields[0] as String,
+    )..records = (fields[1] as HiveList?)?.castHiveList();
   }
 
   @override
   void write(BinaryWriter writer, Categories obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.name);
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.records);
   }
 
   @override
@@ -40,23 +42,23 @@ class CategoriesAdapter extends TypeAdapter<Categories> {
           typeId == other.typeId;
 }
 
-class RecordsAdapter extends TypeAdapter<Records> {
+class RecordAdapter extends TypeAdapter<Record> {
   @override
   final int typeId = 1;
 
   @override
-  Records read(BinaryReader reader) {
+  Record read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Records(
+    return Record(
       fields[0] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Records obj) {
+  void write(BinaryWriter writer, Record obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
@@ -69,7 +71,7 @@ class RecordsAdapter extends TypeAdapter<Records> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is RecordsAdapter &&
+      other is RecordAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

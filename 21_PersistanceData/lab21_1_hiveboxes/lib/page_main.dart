@@ -59,7 +59,7 @@ class _MainPageState extends State<MainPage> {
                                     onTap: () =>
                                         Navigator.of(context).pushNamed(
                                       '/records',
-                                      arguments: item.name,
+                                      arguments: item,
                                     ),
                                   ),
                                 );
@@ -94,7 +94,7 @@ class _MainPageState extends State<MainPage> {
 
   void _addRecord(String name) async {
     if (name.isNotEmpty) {
-      _categoriesBox?.add(Categories(name));
+      _categoriesBox?.add(Categories(name: name));
     }
   }
 
@@ -108,6 +108,7 @@ class _MainPageState extends State<MainPage> {
   void _initializeHive() async {
     await Hive.initFlutter();
     Hive.registerAdapter(CategoriesAdapter());
+    Hive.registerAdapter(RecordAdapter());
 
     Hive.openBox<Categories>('database1').then((value) {
       setState(() {
