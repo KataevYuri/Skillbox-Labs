@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:lab21_1_hiveboxes/categories.dart';
 
 class RecordsPage extends StatefulWidget {
@@ -11,14 +10,12 @@ class RecordsPage extends StatefulWidget {
 
 class _RecordsPageState extends State<RecordsPage> {
   Categories? _selectedCat;
-  Box<Categories>? _categoriesBox;
-  final Box<Categories> _box = Hive.box('database1');
+  final _newrec = TextEditingController();
+
   @override
   void didChangeDependencies() {
     final args = ModalRoute.of(context)?.settings.arguments;
-
     _selectedCat = args as Categories;
-    _categoriesBox = _box.get(_selectedCat!) as Box<Categories>?;
     setState(() {});
     super.didChangeDependencies();
   }
@@ -29,33 +26,61 @@ class _RecordsPageState extends State<RecordsPage> {
       appBar: AppBar(
         title: Text(_selectedCat!.name),
       ),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(child: (_categoriesBox == null) ? Container() : Container()
-                // ValueListenableBuilder(
-                //     valueListenable: _categoriesBox!.listenable(),
-                //     builder: (context, Box<Categories> box, widget) {
-                //       return ListView.builder(
-                //           itemCount: box.length,
-                //           itemBuilder: (_, index) {
-                //             final item = box.values.elementAt(index);
-                //             return Card(
-                //               child: ListTile(
-                //                 title: Text(item.name),
-                //                 onTap: () => Navigator.of(context).pushNamed(
-                //                   '/records',
-                //                   arguments: item,
-                //                 ),
-                //               ),
-                //             );
-                //           });
-                //     }),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          TextField(
+            controller: _newrec,
+            decoration: const InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 2.0),
                 ),
-          ],
-        ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black26, width: 1.0),
+                ),
+                hintText: 'Введите новую запись...'),
+          ),
+          Expanded(
+            child: (_selectedCat!.records == null)
+                ? Container()
+                : ListView.builder(
+                    itemCount: _selectedCat!.records!.length,
+                    itemBuilder: (_, index) {
+                      final item = _selectedCat!.records!.elementAt(index);
+                      return Card(
+                        child:
+                            ListTile(title: Text(item.name), onTap: () => Null
+                                // Navigator.of(context).pushNamed(
+                                //   '/records',
+                                //   arguments: item,
+                                // ),
+                                ),
+                      );
+                    },
+                  ),
+          )
+        ],
+      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          FloatingActionButton(
+            heroTag: "btn1",
+            onPressed: () {
+              _addRecord(_newrec.text);
+              _newrec.text = "";
+            },
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
+  }
+
+  void _addRecord(String name) {
+    if (name.isNotEmpty) {
+      _selectedCat!.records!.add(Record(name));
+      setState(() {});
+    }
   }
 }
