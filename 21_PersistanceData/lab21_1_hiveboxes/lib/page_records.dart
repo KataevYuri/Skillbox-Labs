@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:lab21_1_hiveboxes/categories.dart';
 
 class RecordsPage extends StatefulWidget {
@@ -10,13 +11,16 @@ class RecordsPage extends StatefulWidget {
 
 class _RecordsPageState extends State<RecordsPage> {
   Categories? _selectedCat;
+  Box<Record>? _selectedBox;
   final _newrec = TextEditingController();
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     final args = ModalRoute.of(context)?.settings.arguments;
     _selectedCat = args as Categories;
+    //_selectedBox = await Hive.openBox<Record>('database1');
     setState(() {});
+
     super.didChangeDependencies();
   }
 
@@ -79,7 +83,12 @@ class _RecordsPageState extends State<RecordsPage> {
 
   void _addRecord(String name) {
     if (name.isNotEmpty) {
-      _selectedCat!.records!.add(Record(name));
+      final r = Record(name);
+      //if (_selectedCat!.records == null) {
+      //_selectedCat!.records = HiveList<Record>();
+      //}
+      _selectedCat!.records!.add(r);
+
       setState(() {});
     }
   }
