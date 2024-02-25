@@ -18,7 +18,7 @@ class _RecordsPageState extends State<RecordsPage> {
     final args = ModalRoute.of(context)?.settings.arguments;
 
     _selectedCat = args as Categories;
-    _categoriesBox = _box.get<Categories>(_selectedCat!);
+    _categoriesBox = _box.get(_selectedCat!) as Box<Categories>?;
     setState(() {});
     super.didChangeDependencies();
   }
@@ -29,32 +29,30 @@ class _RecordsPageState extends State<RecordsPage> {
       appBar: AppBar(
         title: Text(_selectedCat!.name),
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(
-              child: (n == null)
-                  ? n
-                  : ValueListenableBuilder(
-                      valueListenable: _categoriesBox!.listenable(),
-                      builder: (context, Box<Categories> box, widget) {
-                        return ListView.builder(
-                            itemCount: box.length,
-                            itemBuilder: (_, index) {
-                              final item = box.values.elementAt(index);
-                              return Card(
-                                child: ListTile(
-                                  title: Text(item.name),
-                                  onTap: () => Navigator.of(context).pushNamed(
-                                    '/records',
-                                    arguments: item,
-                                  ),
-                                ),
-                              );
-                            });
-                      }),
-            ),
+            Expanded(child: (_categoriesBox == null) ? Container() : Container()
+                // ValueListenableBuilder(
+                //     valueListenable: _categoriesBox!.listenable(),
+                //     builder: (context, Box<Categories> box, widget) {
+                //       return ListView.builder(
+                //           itemCount: box.length,
+                //           itemBuilder: (_, index) {
+                //             final item = box.values.elementAt(index);
+                //             return Card(
+                //               child: ListTile(
+                //                 title: Text(item.name),
+                //                 onTap: () => Navigator.of(context).pushNamed(
+                //                   '/records',
+                //                   arguments: item,
+                //                 ),
+                //               ),
+                //             );
+                //           });
+                //     }),
+                ),
           ],
         ),
       ),
