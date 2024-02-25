@@ -84,9 +84,9 @@ class _RecordsPageState extends State<RecordsPage> {
   void _addRecord(String name) {
     if (name.isNotEmpty) {
       final r = Record(name);
-      //if (_selectedCat!.records == null) {
-      //_selectedCat!.records = HiveList<Record>();
-      //}
+      if (_selectedCat!.records == null) {
+        _selectedCat!.records = HiveList<Record>();
+      }
       _selectedCat!.records!.add(r);
 
       setState(() {});
