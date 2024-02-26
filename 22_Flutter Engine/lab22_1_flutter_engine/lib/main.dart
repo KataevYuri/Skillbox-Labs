@@ -16,7 +16,7 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: Scaffold(
-        appBar: MyAppBar(),
+        appBar: CustomAppBarFixTitle(),
         body: Center(
           child: Text('Lab #22. Custom App bar'),
         ),
@@ -25,8 +25,9 @@ class _MainAppState extends State<MainApp> {
   }
 }
 
-class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MyAppBar({
+class CustomAppBarFixTitle extends StatelessWidget
+    implements PreferredSizeWidget {
+  const CustomAppBarFixTitle({
     super.key,
   });
   @override
