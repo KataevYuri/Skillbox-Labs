@@ -9,9 +9,9 @@ class Categories extends HiveObject {
   String name;
 
   @HiveField(1, defaultValue: [])
-  HiveList<Record>? records;
+  late List<Record> records;
 
-  Categories({required this.name});
+  Categories({required this.name, required this.records});
 }
 
 @HiveType(typeId: 1)

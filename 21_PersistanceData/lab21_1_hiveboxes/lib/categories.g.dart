@@ -18,7 +18,8 @@ class CategoriesAdapter extends TypeAdapter<Categories> {
     };
     return Categories(
       name: fields[0] as String,
-    )..records = (fields[1] as HiveList?)?.castHiveList();
+      records: fields[1] == null ? [] : (fields[1] as List).cast<Record>(),
+    );
   }
 
   @override

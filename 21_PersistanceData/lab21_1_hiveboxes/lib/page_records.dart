@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:lab21_1_hiveboxes/categories.dart';
 
 class RecordsPage extends StatefulWidget {
@@ -11,14 +10,12 @@ class RecordsPage extends StatefulWidget {
 
 class _RecordsPageState extends State<RecordsPage> {
   Categories? _selectedCat;
-  Box<Record>? _selectedBox;
   final _newrec = TextEditingController();
 
   @override
   void didChangeDependencies() async {
     final args = ModalRoute.of(context)?.settings.arguments;
     _selectedCat = args as Categories;
-    //_selectedBox = await Hive.openBox<Record>('database1');
     setState(() {});
 
     super.didChangeDependencies();
@@ -45,23 +42,20 @@ class _RecordsPageState extends State<RecordsPage> {
                 hintText: 'Введите новую запись...'),
           ),
           Expanded(
-            child: (_selectedCat!.records == null)
-                ? Container()
-                : ListView.builder(
-                    itemCount: _selectedCat!.records!.length,
-                    itemBuilder: (_, index) {
-                      final item = _selectedCat!.records!.elementAt(index);
-                      return Card(
-                        child:
-                            ListTile(title: Text(item.name), onTap: () => Null
-                                // Navigator.of(context).pushNamed(
-                                //   '/records',
-                                //   arguments: item,
-                                // ),
-                                ),
-                      );
-                    },
-                  ),
+            child: ListView.builder(
+              itemCount: _selectedCat!.records.length,
+              itemBuilder: (_, index) {
+                final item = _selectedCat!.records.elementAt(index);
+                return Card(
+                  child: ListTile(title: Text(item.name), onTap: () => Null
+                      // Navigator.of(context).pushNamed(
+                      //   '/records',
+                      //   arguments: item,
+                      // ),
+                      ),
+                );
+              },
+            ),
           )
         ],
       ),
@@ -84,10 +78,7 @@ class _RecordsPageState extends State<RecordsPage> {
   void _addRecord(String name) {
     if (name.isNotEmpty) {
       final r = Record(name);
-      if (_selectedCat!.records == null) {
-        _selectedCat!.records = HiveList<Record>();
-      }
-      _selectedCat!.records!.add(r);
+      _selectedCat!.records.add(r);
 
       setState(() {});
     }

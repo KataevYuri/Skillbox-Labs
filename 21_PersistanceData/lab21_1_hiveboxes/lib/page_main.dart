@@ -94,7 +94,7 @@ class _MainPageState extends State<MainPage> {
 
   void _addRecord(String name) async {
     if (name.isNotEmpty) {
-      _categoriesBox?.add(Categories(name: name));
+      _categoriesBox?.add(Categories(name: name, records: []));
     }
   }
 
