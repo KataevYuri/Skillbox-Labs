@@ -65,8 +65,10 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) => Container(
           padding: const EdgeInsets.all(16.0),
           alignment: Alignment.centerLeft,
-          child: Text(
-              '${_users[index].id} - ${_users[index].firstName} ${_users[index].lastName}'),
+          child: ListTile(
+            title: Text(
+                '${_users[index].id} - ${_users[index].firstName} ${_users[index].lastName}'),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -75,31 +77,48 @@ class _HomePageState extends State<HomePage> {
               context: context,
               builder: (BuildContext context) {
                 return SizedBox(
-                  height: 200,
+                  height: 300,
                   child: Center(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         TextField(controller: _firstName),
                         TextField(controller: _lastName),
                         TextField(controller: _age),
                         TextField(controller: _tel),
+                        Row(
+                          children: [
+                            ElevatedButton(
+                              child: const Text('Save'),
+                              onPressed: () {
+                                _insertUser(
+                                  User(
+                                      id: _users.length + 1,
+                                      firstName: _firstName.text,
+                                      lastName: _lastName.text,
+                                      age: int.parse(_age.text),
+                                      tel: _tel.text),
+                                );
+                                Navigator.pop(context);
+                              },
+                            ),
+                            ElevatedButton(
+                              child: const Text('Cancel'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
                 );
               });
-
-          _insertUser(
-            User(
-                id: _users.length + 1,
-                firstName: _firstName.text,
-                lastName: _lastName.text,
-                age: int.parse(_age.text),
-                tel: _tel.text),
-          );
         },
         tooltip: 'Add user',
-        child: const Icon(Icons.add_a_photo),
+        child: const Icon(Icons.add_card),
       ),
     );
   }
